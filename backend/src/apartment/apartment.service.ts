@@ -1,28 +1,32 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Apartment } from './apartment.entity';
-import { UpdateApartmentDto } from './apartment.dto';
+import { ApartmentDto } from './apartment.dto';
+import { FindOptions } from 'sequelize';
 
 @Injectable()
 export class ApartmentService {
   constructor(
     @InjectModel(Apartment) private apartmentModel: typeof Apartment,
   ) {}
-  async findAll(): Promise<Apartment[]> {
-    return this.apartmentModel.findAll();
+  async findAll(rooms?: string, price?: 'asc' | 'desc') {
+    const query: FindOptions<Apartment> = {};
+    if (rooms) query['where'] = { rooms };
+    if (price) query['order'] = [['price', price]];
+    return this.apartmentModel.findAll({ ...query });
   }
 
-  async findOne(id): Promise<Apartment> {
+  async findOne(id: number): Promise<Apartment> {
     const apartment = await this.apartmentModel.findByPk(id);
     if (!apartment) throw new BadRequestException('Apartment does not exist');
     return apartment;
   }
 
-  async create(apartment): Promise<Apartment> {
+  async create(apartment: ApartmentDto): Promise<Apartment> {
     return this.apartmentModel.create(apartment);
   }
 
-  async update(id: number, apartment: UpdateApartmentDto): Promise<string> {
+  async update(id: number, apartment: ApartmentDto): Promise<string> {
     const updatedAmount = await this.apartmentModel.update(
       { ...apartment },
       {

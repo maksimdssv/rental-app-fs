@@ -1,7 +1,6 @@
 import { IsInt, IsString, MaxLength, Min } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
 
-export class CreateApartmentDto {
+export class ApartmentDto {
   @IsInt()
   @Min(0)
   readonly rooms: number;
@@ -18,5 +17,3 @@ export class CreateApartmentDto {
   @MaxLength(98)
   readonly description: string;
 }
-
-export class UpdateApartmentDto extends PartialType(CreateApartmentDto) {}
