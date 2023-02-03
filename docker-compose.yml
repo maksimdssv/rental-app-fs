@@ -31,6 +31,8 @@ services:
   db:
     image: postgres:14.2-alpine
     restart: on-failure
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

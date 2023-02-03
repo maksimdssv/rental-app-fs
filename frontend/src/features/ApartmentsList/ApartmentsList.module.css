@@ -1,0 +1,29 @@
+.apartments-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select {
+  margin-left: 0.25rem;
+  color: #8C8C8C;
+  background-color: #F8F8F7;
+  border-radius: 10px;
+  border: none;
+  outline: transparent;
+  font-size: 22px;
+  padding: 8px;
+}
+
+.select * {
+  font-size: 22px;
+}
+
+.rooms {
+  margin-right: 1rem;
+}
