@@ -1,4 +1,4 @@
-import { IsInt, IsString, MaxLength, Min } from 'class-validator';
+import { IsInt, IsString, MaxLength, Min, MinLength } from 'class-validator';
 
 export class ApartmentDto {
   @IsInt()
@@ -10,10 +10,11 @@ export class ApartmentDto {
   readonly price: number;
 
   @IsString()
+  @MinLength(1)
   @MaxLength(98)
   readonly name: string;
 
   @IsString()
-  @MaxLength(98)
+  @MaxLength(998)
   readonly description: string;
 }

@@ -25,7 +25,7 @@ export class ApartmentController {
     const roomsAmount = Number(rooms);
     if (price && price !== 'asc' && price !== 'desc')
       throw new BadRequestException('price must str asc or desc');
-    if (isNaN(roomsAmount) || roomsAmount < 1)
+    if (rooms && (isNaN(roomsAmount) || roomsAmount < 1))
       throw new BadRequestException('rooms must be int bigger than 0');
     return this.apartmentService.findAll(rooms, price);
   }
