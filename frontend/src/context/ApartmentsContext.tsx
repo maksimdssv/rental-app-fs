@@ -54,7 +54,6 @@ export const ApartmentsProvider: FC = ({ children }) => {
     try {
       await requestApi('DELETE', `apartments/${id}`);
       await getApartments(roomsRef.current, priceRef.current);
-      window.alert('Successfully deleted!');
     } catch (err: any) {
       setError(err.response.data.message);
       setIsLoading(false);
@@ -66,7 +65,6 @@ export const ApartmentsProvider: FC = ({ children }) => {
     try {
       await requestApi('POST', `apartments`, { data: apartment });
       await getApartments(roomsRef.current, priceRef.current);
-      window.alert('Successfully created!');
     } catch (err: any) {
       setError(err.response.data.message);
       setIsLoading(false);

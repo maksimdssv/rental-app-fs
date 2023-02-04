@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:dev": "docker-compose --env-file=.env exec backend npx sequelize-cli db:seed:all",
+    "unseed:dev": "docker-compose --env-file=.env exec backend npx sequelize-cli db:seed:undo:all"
   },
   "keywords": [],
   "author": "",

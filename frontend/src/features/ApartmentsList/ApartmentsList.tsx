@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { InfinitySpin } from 'react-loader-spinner';
 
@@ -8,11 +8,13 @@ import classes from './ApartmentsList.module.css';
 
 const ApartmentsList: FC = () => {
   const { error, isLoading, getApartments, apartments } = useContext(ApartmentsContext);
+  const loadRef = useRef<boolean>(true);
   const [sort, setSort] = useState<string | undefined>(undefined);
   const [filter, setFilter] = useState<number | undefined>(undefined);
   const modalNode = document.getElementById('modal');
 
   useEffect(() => {
+    loadRef.current = false;
     const timeout = setTimeout(() => getApartments(filter, sort), 500);
     return () => {
       clearTimeout(timeout);
@@ -64,7 +66,7 @@ const ApartmentsList: FC = () => {
           ))}
         </ul>
       )}
-      {!isLoading && !error && apartments.length === 0 && (
+      {!loadRef.current && !isLoading && !error && apartments.length === 0 && (
         <h1>Nothing here for now...</h1>
       )}
       {isLoading &&
