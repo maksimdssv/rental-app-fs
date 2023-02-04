@@ -1,5 +1,6 @@
 import React, { FC, useContext, useState } from 'react';
 
+import Button from '../../components/Button';
 import ApartmentsContext from '../../context/ApartmentsContext';
 import { Apartment } from '../../types/Apartment';
 import classes from './ApartmentItem.module.css';
@@ -29,17 +30,16 @@ const ApartmentItem: FC<Apartment> = ({ id, name, description, price, rooms }) =
           >
             ▼
           </button>
-          <span className={classes.name}>{name}</span> / {rooms} room
+          <span className={`${classes.text} ${classes['full-name']}`}>{name}</span> /{' '}
+          {rooms} room
           {rooms > 1 ? 's' : ''} / $ {price}
         </p>
-        <button className={classes.button} onClick={handleDelete}>
-          Delete
-        </button>
+        <Button type={'delete'} action={handleDelete} />
       </div>
       {isExtended && (
         <div>
           <span className={classes.break} />
-          <h1 className={classes.text}>{name}</h1>
+          <h1 className={`${classes.text} ${classes['full-name']}`}>{name}</h1>
           <p className={`${classes.text} ${classes.description}`}>{description}</p>
         </div>
       )}

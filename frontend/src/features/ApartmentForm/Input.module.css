@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input {
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  padding: 0.5rem 10px;
+  border: none;
+  outline: transparent;
+}
+
+.input:focus {
+  outline: 2px solid #FF868E;
+}
+
+
+textarea.input {
+  height: fit-content;
+  padding: 0.5rem 10px;
+  resize: none;
+}
+
+.label {
+  margin-left: 5px;
+}

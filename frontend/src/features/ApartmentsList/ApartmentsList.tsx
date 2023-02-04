@@ -1,4 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { InfinitySpin } from 'react-loader-spinner';
 
 import ApartmentsContext from '../../context/ApartmentsContext';
 import ApartmentItem from './ApartmentItem';
@@ -8,6 +10,7 @@ const ApartmentsList: FC = () => {
   const { error, isLoading, getApartments, apartments } = useContext(ApartmentsContext);
   const [sort, setSort] = useState<string | undefined>(undefined);
   const [filter, setFilter] = useState<number | undefined>(undefined);
+  const modalNode = document.getElementById('modal');
 
   useEffect(() => {
     const timeout = setTimeout(() => getApartments(filter, sort), 500);
@@ -37,6 +40,7 @@ const ApartmentsList: FC = () => {
             onChange={handleFilter}
             min={1}
             placeholder={'Filter by rooms'}
+            disabled={isLoading}
           />
           <label htmlFor={'price'}>Sort by:</label>
           <select
@@ -45,6 +49,7 @@ const ApartmentsList: FC = () => {
             defaultValue={'-- select an option --'}
             onChange={handleSelect}
             className={classes.select}
+            disabled={isLoading}
           >
             <option disabled>-- select an option --</option>
             <option value={'desc'}>Price: Highest First</option>
@@ -52,11 +57,25 @@ const ApartmentsList: FC = () => {
           </select>
         </div>
       </header>
-      <ul className={classes['apartments-list']}>
-        {apartments.map((apartment) => (
-          <ApartmentItem key={apartment.id} {...apartment} />
-        ))}
-      </ul>
+      {!isLoading && !error && (
+        <ul className={classes['apartments-list']}>
+          {apartments.map((apartment) => (
+            <ApartmentItem key={apartment.id} {...apartment} />
+          ))}
+        </ul>
+      )}
+      {!isLoading && !error && apartments.length === 0 && (
+        <h1>Nothing here for now...</h1>
+      )}
+      {isLoading &&
+        modalNode &&
+        createPortal(
+          <div className={classes.loader}>
+            <InfinitySpin width="400" color="#4fa94d" />
+          </div>,
+          modalNode,
+        )}
+      {error && <h1>Error:{error}</h1>}
     </section>
   );
 };

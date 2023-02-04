@@ -13,18 +13,22 @@ const ApartmentsContext = createContext<ctxType>({
   removeApartment: function (id: number): void {
     throw new Error('Function not implemented.');
   },
+  createApartment: function (apartment: Omit<Apartment, 'id'>): void {
+    throw new Error('Function not implemented.');
+  },
 });
 
 interface ctxType {
-  error: string | null;
+  error: string[] | null;
   isLoading: boolean;
   apartments: Apartment[];
   getApartments: (rooms?: number, price?: string) => void;
   removeApartment: (id: number) => void;
+  createApartment: (apartment: Omit<Apartment, 'id'>) => void;
 }
 
 export const ApartmentsProvider: FC = ({ children }) => {
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apartments, setApartments] = useState([]);
   const roomsRef = useRef<number | undefined>(undefined);
@@ -40,19 +44,31 @@ export const ApartmentsProvider: FC = ({ children }) => {
       });
       setApartments(response.data);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.response.data.message);
     }
     setIsLoading(false);
   };
 
   const removeApartment = async (id: number) => {
     setIsLoading(true);
-    setError(null);
     try {
       await requestApi('DELETE', `apartments/${id}`);
       await getApartments(roomsRef.current, priceRef.current);
+      window.alert('Successfully deleted!');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.response.data.message);
+      setIsLoading(false);
+    }
+  };
+
+  const createApartment = async (apartment: Omit<Apartment, 'id'>) => {
+    setIsLoading(true);
+    try {
+      await requestApi('POST', `apartments`, { data: apartment });
+      await getApartments(roomsRef.current, priceRef.current);
+      window.alert('Successfully created!');
+    } catch (err: any) {
+      setError(err.response.data.message);
       setIsLoading(false);
     }
   };
@@ -63,6 +79,7 @@ export const ApartmentsProvider: FC = ({ children }) => {
     apartments,
     getApartments,
     removeApartment,
+    createApartment,
   };
   return <ApartmentsContext.Provider value={ctx}>{children}</ApartmentsContext.Provider>;
 };
